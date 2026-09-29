@@ -30,11 +30,15 @@ export const Projects: React.FC = () => {
   useEffect(() => {
     fetchProjects();
 
-    // Subscribe to live GitHub commit updates via Supabase Realtime
+    // Subscribe to live GitHub commit updates & new projects via Supabase Realtime
     const unsubscribe = subscribeToProjects((updatedProject) => {
-      setProjects((prev) =>
-        prev.map((p) => (p.id === updatedProject.id ? { ...p, ...updatedProject } : p))
-      );
+      setProjects((prev) => {
+        const exists = prev.some((p) => p.id === updatedProject.id || p.slug === updatedProject.slug);
+        if (exists) {
+          return prev.map((p) => (p.id === updatedProject.id || p.slug === updatedProject.slug ? { ...p, ...updatedProject } : p));
+        }
+        return [updatedProject, ...prev];
+      });
     });
 
     return () => {

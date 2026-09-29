@@ -94,6 +94,37 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
         console.error('Failed to update project in database:', updateError);
       }
 
+      // If project doesn't exist yet, automatically create it!
+      if (!updatedProjects || updatedProjects.length === 0) {
+        const repoName = payload.repository?.name || repoFullName.split('/')[1] || 'New Project';
+        const repoDesc = payload.repository?.description || `Repository ${repoFullName} on GitHub`;
+        const repoUrl = payload.repository?.html_url || `https://github.com/${repoFullName}`;
+        const language = payload.repository?.language || 'TypeScript';
+        const cleanSlug = repoName.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
+
+        const { error: insertError } = await supabase
+          .from('projects')
+          .insert({
+            title: repoName.replace(/[-_]/g, ' '),
+            slug: cleanSlug,
+            description: repoDesc,
+            long_description: `${repoDesc}. Proyek ini dibuat otomatis dari repositori GitHub ${repoFullName}.`,
+            cover_image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&auto=format&fit=crop&q=80',
+            github_url: repoUrl,
+            github_repo_name: repoFullName,
+            demo_url: payload.repository?.homepage || repoUrl,
+            technologies: [language, 'Git'],
+            category: language === 'PHP' || language === 'Go' || language === 'Python' ? 'Backend' : 'Frontend',
+            featured: false,
+            published: true,
+            ...commitData,
+          });
+
+        if (insertError) {
+          console.error('Error auto-creating new project in database:', insertError);
+        }
+      }
+
       // Record activity log
       await supabase.from('github_activity_logs').insert({
         event_type: 'push',

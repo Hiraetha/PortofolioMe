@@ -42,11 +42,18 @@ export const Home: React.FC = () => {
 
     fetchData();
 
-    // Subscribe to live GitHub commit updates via Supabase Realtime
+    // Subscribe to live GitHub commit updates & featured projects via Supabase Realtime
     const unsubscribe = subscribeToProjects((updatedProject) => {
-      setFeaturedProjects((prev) =>
-        prev.map((p) => (p.id === updatedProject.id ? { ...p, ...updatedProject } : p))
-      );
+      setFeaturedProjects((prev) => {
+        const exists = prev.some((p) => p.id === updatedProject.id || p.slug === updatedProject.slug);
+        if (exists) {
+          return prev.map((p) => (p.id === updatedProject.id || p.slug === updatedProject.slug ? { ...p, ...updatedProject } : p));
+        }
+        if (updatedProject.featured) {
+          return [updatedProject, ...prev].slice(0, 3);
+        }
+        return prev;
+      });
     });
 
     return () => {
