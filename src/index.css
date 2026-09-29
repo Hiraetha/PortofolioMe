@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #f4f4f0;
+    --foreground: #101214;
+    --surface: #ffffff;
+    --surface-muted: #e8e8e2;
+    --surface-hover: #f0f0ea;
+    --border: #101214;
+    --accent: #ff5500;
+    --accent-foreground: #ffffff;
+    --accent-hover: #e64a00;
+    --muted: #deded6;
+    --muted-foreground: #5a6069;
+    --success: #059669;
+    --warning: #d97706;
+    --danger: #dc2626;
+  }
+
+  .dark {
+    --background: #0d0f12;
+    --foreground: #f4f4f6;
+    --surface: #171a1f;
+    --surface-muted: #20242c;
+    --surface-hover: #262c36;
+    --border: #f4f4f6;
+    --accent: #ff5500;
+    --accent-foreground: #ffffff;
+    --accent-hover: #ff6b1a;
+    --muted: #2c323d;
+    --muted-foreground: #9ba3af;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+/* Custom Neo-Brutalist Utilities */
+@layer utilities {
+  .border-brutal {
+    border-width: 2px;
+    border-color: var(--border);
+  }
+
+  .border-brutal-3 {
+    border-width: 3px;
+    border-color: var(--border);
+  }
+
+  .shadow-brutal-sm {
+    box-shadow: 2px 2px 0 var(--border);
+  }
+
+  .shadow-brutal {
+    box-shadow: 4px 4px 0 var(--border);
+  }
+
+  .shadow-brutal-md {
+    box-shadow: 5px 5px 0 var(--border);
+  }
+
+  .shadow-brutal-lg {
+    box-shadow: 7px 7px 0 var(--border);
+  }
+
+  .shadow-brutal-accent {
+    box-shadow: 4px 4px 0 var(--accent);
+  }
+
+  .btn-tactile {
+    transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .btn-tactile:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 5px 5px 0 var(--border);
+  }
+  .btn-tactile:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--border);
+  }
+
+  /* Engineering Grid Background */
+  .bg-blueprint-grid {
+    background-image: 
+      linear-gradient(to right, rgba(16, 18, 20, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(16, 18, 20, 0.06) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  .dark .bg-blueprint-grid {
+    background-image: 
+      linear-gradient(to right, rgba(244, 244, 246, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(244, 244, 246, 0.05) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  /* Monospace terminal dot pattern */
+  .bg-dot-pattern {
+    background-image: radial-gradient(rgba(16, 18, 20, 0.12) 1.5px, transparent 1.5px);
+    background-size: 16px 16px;
+  }
+  .dark .bg-dot-pattern {
+    background-image: radial-gradient(rgba(244, 244, 246, 0.12) 1.5px, transparent 1.5px);
+    background-size: 16px 16px;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
