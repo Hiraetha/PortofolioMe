@@ -13,11 +13,6 @@ Core goals:
 - Vercel-ready deployment.
 - Responsive, accessible, SEO-friendly, and performant.
 
-## Reference
-https://www.rzidinc.com/
-
-Use the reference only for inspiration. Do not copy its source code, assets, branding, or layout.
-
 ## Stack
 - React
 - TypeScript
