@@ -1,18 +1,21 @@
-import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { Project, ProjectInput } from '../types';
-import { MOCK_PROJECTS } from '../lib/mockData';
+import { PORTFOLIO_PROJECTS } from '../data/portfolioData';
+import { enrichProjectsWithGitHubCommits } from './github';
 
-// Local storage key for offline interactive testing
+// Local storage key for interactive client-side editing/testing
 const LOCAL_STORAGE_KEY = 'portfolio_projects_data';
 
 const getStoredLocalProjects = (): Project[] => {
   try {
     const data = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (data) return JSON.parse(data);
+    if (data) {
+      const parsed = JSON.parse(data);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
   } catch (e) {
-    console.error('Failed to read local projects', e);
+    console.debug('Failed to read local projects', e);
   }
-  return MOCK_PROJECTS;
+  return PORTFOLIO_PROJECTS;
 };
 
 const saveStoredLocalProjects = (projects: Project[]) => {
@@ -23,76 +26,40 @@ const saveStoredLocalProjects = (projects: Project[]) => {
   }
 };
 
-export const getPublishedProjects = async (): Promise<Project[]> => {
-  if (isSupabaseConfigured() && supabase) {
+/**
+ * Returns published projects, optionally enriched with live GitHub commits
+ */
+export const getPublishedProjects = async (enrichWithLiveGitHub = true): Promise<Project[]> => {
+  const baseProjects = getStoredLocalProjects().filter((p) => p.published);
+  
+  if (enrichWithLiveGitHub) {
     try {
-      const { data, error } = await supabase
-        .from('projects')
-        .select('*')
-        .eq('published', true)
-        .order('featured', { ascending: false })
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      if (data && data.length > 0) return data as Project[];
-    } catch (err) {
-      console.warn('Falling back to local projects due to Supabase error:', err);
+      return await enrichProjectsWithGitHubCommits(baseProjects);
+    } catch {
+      return baseProjects;
     }
   }
 
-  return getStoredLocalProjects().filter(p => p.published);
+  return baseProjects;
 };
 
 export const getProjectBySlug = async (slug: string): Promise<Project | null> => {
-  if (isSupabaseConfigured() && supabase) {
-    try {
-      const { data, error } = await supabase
-        .from('projects')
-        .select('*')
-        .eq('slug', slug)
-        .single();
+  const found = getStoredLocalProjects().find((p) => p.slug === slug);
+  if (!found) return null;
 
-      if (error) throw error;
-      if (data) return data as Project;
-    } catch (err) {
-      console.warn(`Falling back for project slug "${slug}":`, err);
-    }
+  try {
+    const enriched = await enrichProjectsWithGitHubCommits([found]);
+    return enriched[0] || found;
+  } catch {
+    return found;
   }
-
-  const found = getStoredLocalProjects().find(p => p.slug === slug);
-  return found || null;
 };
 
 export const getAllProjectsAdmin = async (): Promise<Project[]> => {
-  if (isSupabaseConfigured() && supabase) {
-    try {
-      const { data, error } = await supabase
-        .from('projects')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      if (data) return data as Project[];
-    } catch (err) {
-      console.warn('Falling back to local projects for admin:', err);
-    }
-  }
-
   return getStoredLocalProjects();
 };
 
 export const createProject = async (input: ProjectInput): Promise<Project> => {
-  if (isSupabaseConfigured() && supabase) {
-    const { data, error } = await supabase
-      .from('projects')
-      .insert([input])
-      .select()
-      .single();
-
-    if (error) throw error;
-    return data as Project;
-  }
-
   const newProj: Project = {
     ...input,
     id: `proj-${Date.now()}`,
@@ -105,20 +72,8 @@ export const createProject = async (input: ProjectInput): Promise<Project> => {
 };
 
 export const updateProject = async (id: string, input: Partial<ProjectInput>): Promise<Project> => {
-  if (isSupabaseConfigured() && supabase) {
-    const { data, error } = await supabase
-      .from('projects')
-      .update({ ...input, updated_at: new Date().toISOString() })
-      .eq('id', id)
-      .select()
-      .single();
-
-    if (error) throw error;
-    return data as Project;
-  }
-
   const list = getStoredLocalProjects();
-  const index = list.findIndex(p => p.id === id);
+  const index = list.findIndex((p) => p.id === id);
   if (index === -1) throw new Error('Project not found');
 
   const updated: Project = {
@@ -132,48 +87,6 @@ export const updateProject = async (id: string, input: Partial<ProjectInput>): P
 };
 
 export const deleteProject = async (id: string): Promise<void> => {
-  if (isSupabaseConfigured() && supabase) {
-    const { error } = await supabase
-      .from('projects')
-      .delete()
-      .eq('id', id);
-
-    if (error) throw error;
-    return;
-  }
-
-  const list = getStoredLocalProjects().filter(p => p.id !== id);
+  const list = getStoredLocalProjects().filter((p) => p.id !== id);
   saveStoredLocalProjects(list);
-};
-
-/**
- * Subscribes to Realtime updates on the 'projects' table.
- * Triggered automatically when GitHub Webhook updates a project's latest commit!
- */
-export const subscribeToProjects = (onUpdate: (project: Project) => void) => {
-  if (!isSupabaseConfigured() || !supabase) {
-    return () => {};
-  }
-
-  const client = supabase;
-  const channel = client
-    .channel('realtime:projects')
-    .on(
-      'postgres_changes',
-      {
-        event: '*',
-        schema: 'public',
-        table: 'projects',
-      },
-      (payload) => {
-        if (payload.new && typeof payload.new === 'object' && 'id' in payload.new) {
-          onUpdate(payload.new as Project);
-        }
-      }
-    )
-    .subscribe();
-
-  return () => {
-    client.removeChannel(channel);
-  };
 };

@@ -1,17 +1,19 @@
-import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { Achievement, AchievementInput } from '../types';
-import { MOCK_ACHIEVEMENTS } from '../lib/mockData';
+import { PORTFOLIO_ACHIEVEMENTS } from '../data/portfolioData';
 
 const LOCAL_STORAGE_KEY = 'portfolio_achievements_v4';
 
 const getStoredLocalAchievements = (): Achievement[] => {
   try {
     const data = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (data) return JSON.parse(data);
+    if (data) {
+      const parsed = JSON.parse(data);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
   } catch (e) {
-    console.error('Failed to read local achievements', e);
+    console.debug('Failed to read local achievements', e);
   }
-  return MOCK_ACHIEVEMENTS;
+  return PORTFOLIO_ACHIEVEMENTS;
 };
 
 const saveStoredLocalAchievements = (achievements: Achievement[]) => {
@@ -23,36 +25,10 @@ const saveStoredLocalAchievements = (achievements: Achievement[]) => {
 };
 
 export const getAchievements = async (): Promise<Achievement[]> => {
-  if (isSupabaseConfigured() && supabase) {
-    try {
-      const { data, error } = await supabase
-        .from('achievements')
-        .select('*')
-        .order('featured', { ascending: false })
-        .order('date', { ascending: false });
-
-      if (error) throw error;
-      if (data && data.length > 0) return data as Achievement[];
-    } catch (err) {
-      console.warn('Falling back to local achievements:', err);
-    }
-  }
-
   return getStoredLocalAchievements();
 };
 
 export const createAchievement = async (input: AchievementInput): Promise<Achievement> => {
-  if (isSupabaseConfigured() && supabase) {
-    const { data, error } = await supabase
-      .from('achievements')
-      .insert([input])
-      .select()
-      .single();
-
-    if (error) throw error;
-    return data as Achievement;
-  }
-
   const newAch: Achievement = {
     ...input,
     id: `ach-${Date.now()}`,
@@ -65,20 +41,8 @@ export const createAchievement = async (input: AchievementInput): Promise<Achiev
 };
 
 export const updateAchievement = async (id: string, input: Partial<AchievementInput>): Promise<Achievement> => {
-  if (isSupabaseConfigured() && supabase) {
-    const { data, error } = await supabase
-      .from('achievements')
-      .update({ ...input, updated_at: new Date().toISOString() })
-      .eq('id', id)
-      .select()
-      .single();
-
-    if (error) throw error;
-    return data as Achievement;
-  }
-
   const list = getStoredLocalAchievements();
-  const index = list.findIndex(a => a.id === id);
+  const index = list.findIndex((a) => a.id === id);
   if (index === -1) throw new Error('Achievement not found');
 
   const updated: Achievement = {
@@ -92,16 +56,6 @@ export const updateAchievement = async (id: string, input: Partial<AchievementIn
 };
 
 export const deleteAchievement = async (id: string): Promise<void> => {
-  if (isSupabaseConfigured() && supabase) {
-    const { error } = await supabase
-      .from('achievements')
-      .delete()
-      .eq('id', id);
-
-    if (error) throw error;
-    return;
-  }
-
-  const list = getStoredLocalAchievements().filter(a => a.id !== id);
+  const list = getStoredLocalAchievements().filter((a) => a.id !== id);
   saveStoredLocalAchievements(list);
 };

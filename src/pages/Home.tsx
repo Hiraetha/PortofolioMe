@@ -7,7 +7,7 @@ import { TechStackSection } from '../components/home/TechStackSection';
 import { ProjectCard } from '../components/projects/ProjectCard';
 import { AchievementCard } from '../components/achievements/AchievementCard';
 import { LoadingState } from '../components/ui/States';
-import { getPublishedProjects, subscribeToProjects } from '../services/projects';
+import { getPublishedProjects } from '../services/projects';
 import { getAchievements } from '../services/achievements';
 import { getTechnologies } from '../services/technologies';
 import { getProfile } from '../services/profile';
@@ -41,24 +41,6 @@ export const Home: React.FC = () => {
     };
 
     fetchData();
-
-    // Subscribe to live GitHub commit updates & featured projects via Supabase Realtime
-    const unsubscribe = subscribeToProjects((updatedProject) => {
-      setFeaturedProjects((prev) => {
-        const exists = prev.some((p) => p.id === updatedProject.id || p.slug === updatedProject.slug);
-        if (exists) {
-          return prev.map((p) => (p.id === updatedProject.id || p.slug === updatedProject.slug ? { ...p, ...updatedProject } : p));
-        }
-        if (updatedProject.featured) {
-          return [updatedProject, ...prev].slice(0, 3);
-        }
-        return prev;
-      });
-    });
-
-    return () => {
-      unsubscribe();
-    };
   }, []);
 
   if (loading) {
@@ -129,8 +111,8 @@ export const Home: React.FC = () => {
                   <div className="text-[10px] font-mono font-bold text-muted-foreground uppercase">EDGE VERCEL</div>
                 </div>
                 <div className="p-3 bg-surface-muted border-2 border-border shadow-brutal-sm">
-                  <div className="text-xl sm:text-2xl font-black font-mono">STRICT</div>
-                  <div className="text-[10px] font-mono font-bold text-muted-foreground uppercase">SUPABASE RLS</div>
+                  <div className="text-xl sm:text-2xl font-black font-mono">0ms</div>
+                  <div className="text-[10px] font-mono font-bold text-muted-foreground uppercase">STATIC ENGINE</div>
                 </div>
               </div>
             </div>

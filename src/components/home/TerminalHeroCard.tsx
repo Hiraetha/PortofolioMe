@@ -19,7 +19,7 @@ export const TerminalHeroCard: React.FC = () => {
     { text: '>> SYSTEM INITIALIZATION OK [STATUS 200]', className: 'text-white font-bold' },
     { text: '> ARCHITECTURE: Fullstack & Cross-Platform Native', className: 'text-gray-300' },
     { text: '> RUNTIME: Node 24 LTS | TypeScript 5.7 Strict', className: 'text-gray-300' },
-    { text: '> DATABASE: Supabase PostgreSQL with Strict RLS', className: 'text-gray-300' },
+    { text: '> DATA ENGINE: Static Architecture & GitHub REST API', className: 'text-gray-300' },
     { text: '> DEPLOYMENT: Vercel Global Edge Network', className: 'text-gray-300' },
     { text: '> READY TO RECEIVE MISSIONS AND CODE COLLABORATION.', className: 'text-[#ff5500] font-bold' },
   ];

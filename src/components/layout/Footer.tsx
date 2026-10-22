@@ -14,7 +14,7 @@ export const Footer: React.FC = () => {
             SYSTEM STATUS: ALL SERVICES OPERATIONAL
           </span>
           <span className="hidden sm:inline text-surface/70">
-            DEPLOYED VIA VERCEL EDGE & SUPABASE
+            DEPLOYED VIA VERCEL EDGE & GITHUB API
           </span>
         </div>
       </div>
@@ -32,12 +32,12 @@ export const Footer: React.FC = () => {
               </span>
             </div>
             <p className="font-mono text-xs text-muted-foreground max-w-md leading-relaxed">
-              Personal engineering workspace built with React, TypeScript, Tailwind CSS, Supabase, and Vercel. Embracing high-contrast brutalist aesthetics with pragmatic architecture.
+              Personal engineering workspace built with React, TypeScript, Tailwind CSS, and GitHub REST API. Embracing high-contrast brutalist aesthetics with pragmatic zero-latency architecture.
             </p>
             <div className="pt-2 flex flex-wrap gap-2 text-[11px] font-mono">
               <span className="px-2 py-1 bg-surface-muted border border-border">REACT 18</span>
               <span className="px-2 py-1 bg-surface-muted border border-border">TYPESCRIPT</span>
-              <span className="px-2 py-1 bg-surface-muted border border-border">SUPABASE</span>
+              <span className="px-2 py-1 bg-surface-muted border border-border">STATIC ENGINE</span>
               <span className="px-2 py-1 bg-surface-muted border border-border">TAILWIND</span>
             </div>
           </div>

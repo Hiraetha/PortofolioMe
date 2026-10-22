@@ -1,6 +1,5 @@
-import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { Profile, ProfileInput } from '../types';
-import { MOCK_PROFILE } from '../lib/mockData';
+import { PORTFOLIO_PROFILE } from '../data/portfolioData';
 
 const LOCAL_STORAGE_KEY = 'portfolio_profile_data';
 
@@ -9,9 +8,9 @@ const getStoredLocalProfile = (): Profile => {
     const data = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (data) return JSON.parse(data);
   } catch (e) {
-    console.error('Failed to read local profile', e);
+    console.debug('Failed to read local profile', e);
   }
-  return MOCK_PROFILE;
+  return PORTFOLIO_PROFILE;
 };
 
 const saveStoredLocalProfile = (profile: Profile) => {
@@ -23,37 +22,10 @@ const saveStoredLocalProfile = (profile: Profile) => {
 };
 
 export const getProfile = async (): Promise<Profile> => {
-  if (isSupabaseConfigured() && supabase) {
-    try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .limit(1)
-        .maybeSingle();
-
-      if (error) throw error;
-      if (data) return data as Profile;
-    } catch (err) {
-      console.warn('Falling back to local profile:', err);
-    }
-  }
-
   return getStoredLocalProfile();
 };
 
 export const updateProfile = async (input: Partial<ProfileInput>): Promise<Profile> => {
-  if (isSupabaseConfigured() && supabase) {
-    const current = await getProfile();
-    const { data, error } = await supabase
-      .from('profiles')
-      .upsert({ ...current, ...input, updated_at: new Date().toISOString() })
-      .select()
-      .single();
-
-    if (error) throw error;
-    return data as Profile;
-  }
-
   const current = getStoredLocalProfile();
   const updated: Profile = {
     ...current,

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Search, SlidersHorizontal, FolderGit2 } from 'lucide-react';
 import { ProjectCard } from '../components/projects/ProjectCard';
 import { LoadingState, EmptyState, ErrorState } from '../components/ui/States';
-import { getPublishedProjects, subscribeToProjects } from '../services/projects';
+import { getPublishedProjects } from '../services/projects';
 import { Project } from '../types';
 
 export const Projects: React.FC = () => {
@@ -29,21 +29,6 @@ export const Projects: React.FC = () => {
 
   useEffect(() => {
     fetchProjects();
-
-    // Subscribe to live GitHub commit updates & new projects via Supabase Realtime
-    const unsubscribe = subscribeToProjects((updatedProject) => {
-      setProjects((prev) => {
-        const exists = prev.some((p) => p.id === updatedProject.id || p.slug === updatedProject.slug);
-        if (exists) {
-          return prev.map((p) => (p.id === updatedProject.id || p.slug === updatedProject.slug ? { ...p, ...updatedProject } : p));
-        }
-        return [updatedProject, ...prev];
-      });
-    });
-
-    return () => {
-      unsubscribe();
-    };
   }, []);
 
   const categories = ['ALL', ...Array.from(new Set(projects.map((p) => p.category).filter(Boolean)))];

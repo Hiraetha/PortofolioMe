@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
-import { ShieldCheck, Database, HardDrive, CheckCircle2, AlertTriangle, RefreshCw } from 'lucide-react';
-import { isSupabaseConfigured } from '../../lib/supabase';
+import { ShieldCheck, Database, HardDrive, CheckCircle2, RefreshCw } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Toast } from '../../components/ui/Toast';
 
 export const AdminSettings: React.FC = () => {
-  const isConnected = isSupabaseConfigured();
-  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'NOT CONFIGURED';
-  const hasAnonKey = Boolean(import.meta.env.VITE_SUPABASE_ANON_KEY);
 
   const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
@@ -41,50 +37,40 @@ export const AdminSettings: React.FC = () => {
         </p>
       </div>
 
-      {/* Supabase Status Card */}
+      {/* System Architecture Card */}
       <div className="p-6 bg-surface border-3 border-border shadow-brutal space-y-4">
         <div className="flex items-center justify-between border-b-2 border-border pb-3">
           <h3 className="font-sans font-black text-lg uppercase tracking-tight text-foreground flex items-center gap-2">
-            <Database className="w-5 h-5 text-accent" /> SUPABASE CLOUD CONNECTION
+            <Database className="w-5 h-5 text-accent" /> SYSTEM ARCHITECTURE: 100% STATIC
           </h3>
-          <span
-            className={`px-3 py-1 font-mono text-xs font-bold uppercase border-2 ${
-              isConnected
-                ? 'bg-emerald-50 text-emerald-800 border-emerald-600'
-                : 'bg-amber-50 text-amber-900 border-amber-600'
-            }`}
-          >
-            {isConnected ? 'LIVE INSTANCE CONNECTED' : 'OFFLINE / DEMO CACHE ACTIVE'}
+          <span className="px-3 py-1 font-mono text-xs font-bold uppercase border-2 bg-emerald-50 text-emerald-800 border-emerald-600">
+            STATIC ENGINE ACTIVE (0ms LATENCY)
           </span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs">
           <div className="p-3 bg-surface-muted border border-border space-y-1">
-            <span className="text-muted-foreground font-bold uppercase">SUPABASE PROJECT URL:</span>
-            <div className="font-bold text-foreground truncate">{supabaseUrl}</div>
+            <span className="text-muted-foreground font-bold uppercase">DATA SOURCE:</span>
+            <div className="font-bold text-foreground">src/data/portfolioData.ts (Bundled)</div>
           </div>
           <div className="p-3 bg-surface-muted border border-border space-y-1">
-            <span className="text-muted-foreground font-bold uppercase">PUBLIC ANON KEY STATUS:</span>
-            <div className="font-bold text-foreground">
-              {hasAnonKey ? 'KEY DETECTED (SAFE ANONYMOUS)' : 'NOT DETECTED'}
-            </div>
+            <span className="text-muted-foreground font-bold uppercase">LIVE COMMITS ENGINE:</span>
+            <div className="font-bold text-foreground">GitHub Public REST API (Browser Cache 5m)</div>
           </div>
         </div>
 
-        {!isConnected && (
-          <div className="p-4 bg-amber-50 border-2 border-amber-600 text-amber-950 font-mono text-xs space-y-2">
-            <div className="font-bold flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 text-amber-600" />
-              HOW TO CONNECT YOUR PRODUCTION SUPABASE PROJECT:
-            </div>
-            <ol className="list-decimal list-inside space-y-1 text-[11px] text-amber-900">
-              <li>Open your project at <code>supabase.com</code>.</li>
-              <li>Execute migrations in <code>supabase/migrations/</code> in sequential order.</li>
-              <li>Copy Project URL and Anon Key into your <code>.env.local</code> file.</li>
-              <li>Restart dev server with <code>npm run dev</code>.</li>
-            </ol>
+        <div className="p-4 bg-emerald-50 border-2 border-emerald-600 text-emerald-950 font-mono text-xs space-y-2">
+          <div className="font-bold flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+            BENEFITS OF STATIC ARCHITECTURE:
           </div>
-        )}
+          <ul className="list-disc list-inside space-y-1 text-[11px] text-emerald-900">
+            <li>Zero database subscription costs, zero cold starts, zero API key exposure.</li>
+            <li>Can be deployed to Vercel, Netlify, GitHub Pages, or Cloudflare Pages instantly.</li>
+            <li>Repository commits sync directly via client-side GitHub REST API with instant fallback.</li>
+            <li>Admin preview mode saves overrides locally in browser localStorage.</li>
+          </ul>
+        </div>
       </div>
 
       {/* Security Status Card */}

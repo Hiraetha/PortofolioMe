@@ -1,10 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { supabase, isSupabaseConfigured } from '../lib/supabase';
-import { User, Session } from '@supabase/supabase-js';
+
+export interface AuthUser {
+  id: string;
+  email: string;
+  user_metadata?: { name?: string };
+}
 
 interface AuthContextType {
-  user: User | null;
-  session: Session | null;
+  user: AuthUser | null;
   loading: boolean;
   isAdmin: boolean;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
@@ -16,77 +19,49 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const DEMO_STORAGE_KEY = 'portfolio_demo_admin_session';
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (isSupabaseConfigured() && supabase) {
-      // 1. Live Supabase Auth
-      supabase.auth.getSession().then(({ data: { session } }) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        setLoading(false);
-      });
-
-      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        setLoading(false);
-      });
-
-      return () => subscription.unsubscribe();
-    } else {
-      // 2. Demo fallback authentication for local testing
+    try {
       const savedDemo = localStorage.getItem(DEMO_STORAGE_KEY);
       if (savedDemo) {
-        const mockUser = JSON.parse(savedDemo);
+        const mockUser: AuthUser = JSON.parse(savedDemo);
         setUser(mockUser);
-        setSession({ user: mockUser } as unknown as Session);
       }
+    } catch (e) {
+      console.debug('Failed to load demo auth session', e);
+    } finally {
       setLoading(false);
     }
   }, []);
 
   const signIn = async (email: string, password: string): Promise<{ error: Error | null }> => {
-    if (isSupabaseConfigured() && supabase) {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-      return { error: error ? new Error(error.message) : null };
-    }
-
-    // Demo login handler
+    // Static mode admin credentials
     if (email && password.length >= 6) {
-      const mockUser = {
-        id: 'demo-admin-uuid',
+      const mockUser: AuthUser = {
+        id: 'admin-ibnu',
         email,
-        app_metadata: { role: 'admin' },
-        user_metadata: { name: 'Demo Administrator' },
-        created_at: new Date().toISOString(),
-      } as unknown as User;
+        user_metadata: { name: 'Ibnu Abi Ad-Dunya' },
+      };
 
       localStorage.setItem(DEMO_STORAGE_KEY, JSON.stringify(mockUser));
       setUser(mockUser);
-      setSession({ user: mockUser } as unknown as Session);
       return { error: null };
     }
 
-    return { error: new Error('Invalid credentials. Password must be at least 6 characters.') };
+    return { error: new Error('Password minimal 6 karakter.') };
   };
 
   const signOut = async () => {
-    if (isSupabaseConfigured() && supabase) {
-      await supabase.auth.signOut();
-    }
     localStorage.removeItem(DEMO_STORAGE_KEY);
     setUser(null);
-    setSession(null);
   };
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        session,
         loading,
         isAdmin: Boolean(user),
         signIn,

@@ -4,7 +4,6 @@ import { KeyRound, ArrowLeft, AlertCircle, Terminal, Lock } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
-import { isSupabaseConfigured } from '../../lib/supabase';
 
 export const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -68,16 +67,14 @@ export const Login: React.FC = () => {
             </div>
           )}
 
-          {!isSupabaseConfigured() && (
-            <div className="p-3 bg-amber-50 border-2 border-amber-600 text-amber-950 font-mono text-xs space-y-1">
+            <div className="p-3 bg-accent/10 border-2 border-accent text-foreground font-mono text-xs space-y-1">
               <div className="font-bold flex items-center gap-1">
-                <Terminal className="w-3.5 h-3.5 text-accent" /> DEMO / LOCAL MODE DETECTED
+                <Terminal className="w-3.5 h-3.5 text-accent" /> LOCAL ADMIN CONSOLE
               </div>
-              <p className="text-[11px] text-amber-900">
-                You can sign in with any valid email and 6+ character password (e.g. <code>admin@portfolio.local</code> / <code>admin123</code>).
+              <p className="text-[11px] text-muted-foreground">
+                Gunakan email apa saja dan password minimal 6 karakter (misal: <code>ibnu@portfolio.local</code> / <code>ibnu123</code>).
               </p>
             </div>
-          )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
