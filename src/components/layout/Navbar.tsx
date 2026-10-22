@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { Menu, X, Terminal, Shield, ArrowUpRight } from 'lucide-react';
-import { useAuth } from '../../context/AuthContext';
+import { Menu, X, Terminal, ArrowUpRight } from 'lucide-react';
+import { GithubIcon } from '../ui/Icons';
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { user } = useAuth();
 
   const navLinks = [
     { name: 'INDEX', path: '/' },
@@ -56,27 +55,31 @@ export const Navbar: React.FC = () => {
               </NavLink>
             ))}
 
-            {/* Admin Login shortcut */}
-            <Link
-              to={user ? '/admin' : '/admin/login'}
+            {/* GitHub Profile shortcut */}
+            <a
+              href="https://github.com/Hiraetha"
+              target="_blank"
+              rel="noopener noreferrer"
               className="ml-3 pl-3 border-l-2 border-border/40 flex items-center gap-1.5 text-xs font-mono font-bold text-muted-foreground hover:text-foreground group transition-colors"
-              title={user ? 'Admin Dashboard' : 'Owner Login'}
+              title="GitHub Profile @Hiraetha"
             >
-              <Shield className="w-3.5 h-3.5 group-hover:text-accent transition-colors" />
-              <span className="hidden lg:inline">{user ? 'DASHBOARD' : 'CMS'}</span>
+              <GithubIcon className="w-3.5 h-3.5 group-hover:text-accent transition-colors" />
+              <span className="hidden lg:inline">GITHUB</span>
               <ArrowUpRight className="w-3 h-3 opacity-60 group-hover:opacity-100" />
-            </Link>
+            </a>
           </nav>
 
           {/* Mobile Menu Button */}
           <div className="flex items-center md:hidden gap-2">
-            <Link
-              to={user ? '/admin' : '/admin/login'}
+            <a
+              href="https://github.com/Hiraetha"
+              target="_blank"
+              rel="noopener noreferrer"
               className="p-2 border-2 border-border bg-surface-muted shadow-brutal-sm text-foreground"
-              aria-label="Admin Access"
+              aria-label="GitHub Profile"
             >
-              <Shield className="w-4 h-4" />
-            </Link>
+              <GithubIcon className="w-4 h-4" />
+            </a>
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="p-2 border-2 border-border bg-surface shadow-brutal-sm text-foreground hover:bg-surface-muted focus:outline-none"
@@ -109,17 +112,19 @@ export const Navbar: React.FC = () => {
             </NavLink>
           ))}
           <div className="pt-2 border-t-2 border-border/20">
-            <Link
-              to={user ? '/admin' : '/admin/login'}
+            <a
+              href="https://github.com/Hiraetha"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => setIsOpen(false)}
               className="flex items-center justify-between px-4 py-2.5 font-mono text-xs font-bold text-foreground bg-surface border-2 border-border shadow-brutal-sm"
             >
               <span className="flex items-center gap-2">
-                <Shield className="w-4 h-4 text-accent" />
-                {user ? 'ADMIN DASHBOARD' : 'ADMIN LOGIN'}
+                <GithubIcon className="w-4 h-4 text-accent" />
+                GITHUB @Hiraetha
               </span>
               <ArrowUpRight className="w-4 h-4" />
-            </Link>
+            </a>
           </div>
         </div>
       )}

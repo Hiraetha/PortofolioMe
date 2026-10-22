@@ -1,7 +1,5 @@
-import { createBrowserRouter, Navigate, Link } from 'react-router-dom';
+import { createBrowserRouter, Link } from 'react-router-dom';
 import { PublicLayout } from '../components/layout/PublicLayout';
-import { ProtectedRoute } from '../components/admin/ProtectedRoute';
-import { AdminLayout } from '../components/admin/AdminLayout';
 
 // Public Pages
 import { Home } from '../pages/Home';
@@ -10,14 +8,6 @@ import { ProjectDetail } from '../pages/ProjectDetail';
 import { Achievements } from '../pages/Achievements';
 import { About } from '../pages/About';
 import { Contact } from '../pages/Contact';
-
-// Admin Pages
-import { Login } from '../pages/admin/Login';
-import { Dashboard } from '../pages/admin/Dashboard';
-import { AdminProjects } from '../pages/admin/AdminProjects';
-import { AdminAchievements } from '../pages/admin/AdminAchievements';
-import { AdminProfile } from '../pages/admin/AdminProfile';
-import { AdminSettings } from '../pages/admin/AdminSettings';
 
 // 404 Page
 const NotFoundPage = () => (
@@ -29,7 +19,7 @@ const NotFoundPage = () => (
       ROUTE MANIFEST NOT FOUND
     </h1>
     <p className="font-mono text-sm text-muted-foreground max-w-md">
-      The requested URL does not match any registered public endpoint or administrative console.
+      The requested URL does not match any registered public endpoint.
     </p>
     <div className="pt-2">
       <Link
@@ -43,7 +33,6 @@ const NotFoundPage = () => (
 );
 
 export const router = createBrowserRouter([
-  // Public Routes
   {
     path: '/',
     element: <PublicLayout />,
@@ -55,31 +44,6 @@ export const router = createBrowserRouter([
       { path: 'about', element: <About /> },
       { path: 'contact', element: <Contact /> },
       { path: '*', element: <NotFoundPage /> },
-    ],
-  },
-
-  // Admin Auth Route
-  {
-    path: '/admin/login',
-    element: <Login />,
-  },
-
-  // Protected Admin Routes
-  {
-    path: '/admin',
-    element: <ProtectedRoute />,
-    children: [
-      {
-        element: <AdminLayout />,
-        children: [
-          { index: true, element: <Dashboard /> },
-          { path: 'projects', element: <AdminProjects /> },
-          { path: 'achievements', element: <AdminAchievements /> },
-          { path: 'profile', element: <AdminProfile /> },
-          { path: 'settings', element: <AdminSettings /> },
-          { path: '*', element: <Navigate to="/admin" replace /> },
-        ],
-      },
     ],
   },
 ]);

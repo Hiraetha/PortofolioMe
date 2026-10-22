@@ -95,7 +95,7 @@ export const Footer: React.FC = () => {
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
               <a
-                href="ibnuabiadunya@gmail.com"
+                href="mailto:ibnuabiadunya@gmail.com"
                 className="flex items-center justify-between p-2 bg-surface-muted border-2 border-border shadow-brutal-sm hover:translate-x-1 hover:shadow-brutal transition-all"
               >
                 <span className="flex items-center gap-2">
@@ -110,9 +110,14 @@ export const Footer: React.FC = () => {
         <div className="mt-12 pt-6 border-t-2 border-border flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-muted-foreground">
           <p>© {new Date().getFullYear()} IBNU.DEV. ALL RIGHTS RESERVED.</p>
           <div className="flex items-center gap-4">
-            <Link to="/admin/login" className="hover:text-foreground underline">
-              ADMIN CMS
-            </Link>
+            <a
+              href="https://github.com/Hiraetha/PortofolioMe"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-foreground underline"
+            >
+              SOURCE CODE
+            </a>
             <span>•</span>
             <span>NEO-BRUTALIST TECH DESIGN</span>
           </div>
