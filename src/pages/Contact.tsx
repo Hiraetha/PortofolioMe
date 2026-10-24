@@ -89,7 +89,7 @@ export const Contact: React.FC = () => {
 
               <div className="space-y-3 pt-2">
                 <a
-                  href="ibnuabiadunya@gmail.com"
+                  href="mailto:ibnuabiadunya@gmail.com"
                   className="p-3 bg-surface-muted border-2 border-border shadow-brutal-sm flex items-center gap-3 hover:translate-x-1 transition-transform group"
                 >
                   <div className="p-2 bg-accent text-accent-foreground border border-border">
@@ -97,7 +97,7 @@ export const Contact: React.FC = () => {
                   </div>
                   <div className="font-mono text-xs">
                     <div className="font-bold text-foreground group-hover:text-accent">EMAIL INBOX</div>
-                    <div className="text-muted-foreground text-[11px]">dev@example.com</div>
+                    <div className="text-muted-foreground text-[11px]">ibnuabiadunya@gmail.com</div>
                   </div>
                 </a>
 
