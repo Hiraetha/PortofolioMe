@@ -47,6 +47,11 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, featuredLayou
               FEATURED
             </Badge>
           )}
+          {project.is_private && (
+            <Badge variant="outline" size="sm" className="bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200 border-amber-600 font-bold">
+              PRIVATE
+            </Badge>
+          )}
           {project.category && (
             <Badge variant="default" size="sm">
               {project.category}
@@ -130,6 +135,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, featuredLayou
                 rel="noopener noreferrer"
                 className="p-2 bg-surface hover:bg-surface-muted border-2 border-border shadow-brutal-sm hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all text-foreground"
                 aria-label={`View ${project.title} source code on GitHub`}
+                title={project.is_private ? 'Private Repository (Internal School System)' : `View ${project.title} on GitHub`}
               >
                 <GithubIcon className="w-4 h-4" />
               </a>

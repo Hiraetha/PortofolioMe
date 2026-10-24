@@ -32,6 +32,7 @@ export interface Project {
   category?: string | null;
   featured: boolean;
   published: boolean;
+  is_private?: boolean;
   github_repo_name?: string | null;
   last_commit_message?: string | null;
   last_commit_at?: string | null;

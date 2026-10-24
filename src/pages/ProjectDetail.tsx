@@ -94,6 +94,11 @@ export const ProjectDetail: React.FC = () => {
         <header className="space-y-6">
           <div className="flex flex-wrap gap-2 items-center">
             {project.featured && <Badge variant="accent">FEATURED PROJECT</Badge>}
+            {project.is_private && (
+              <Badge variant="outline" className="bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200 border-amber-600 font-bold">
+                PRIVATE REPO
+              </Badge>
+            )}
             {project.category && <Badge variant="default">{project.category}</Badge>}
             {formattedDate && (
               <span className="font-mono text-xs text-muted-foreground flex items-center gap-1 ml-2">
@@ -115,18 +120,25 @@ export const ProjectDetail: React.FC = () => {
             {project.demo_url && (
               <a href={project.demo_url} target="_blank" rel="noopener noreferrer">
                 <Button variant="primary" size="md">
-                  LAUNCH LIVE DEMO <ExternalLink className="w-4 h-4 ml-1.5" />
+                  LAUNCH LIVE PORTAL <ExternalLink className="w-4 h-4 ml-1.5" />
                 </Button>
               </a>
             )}
             {project.github_url && (
-              <a href={project.github_url} target="_blank" rel="noopener noreferrer">
+              <a href={project.github_url} target="_blank" rel="noopener noreferrer" title={project.is_private ? 'Private Repository (Internal SMKN 12)' : 'View GitHub Repository'}>
                 <Button variant="outline" size="md">
-                  VIEW REPOSITORY <GithubIcon className="w-4 h-4 ml-1.5" />
+                  {project.is_private ? 'VIEW REPOSITORY (PRIVATE)' : 'VIEW REPOSITORY'} <GithubIcon className="w-4 h-4 ml-1.5" />
                 </Button>
               </a>
             )}
           </div>
+
+          {project.is_private && (
+            <div className="p-3 bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-600 text-amber-950 dark:text-amber-200 font-mono text-xs flex items-start gap-2 shadow-brutal-sm">
+              <span className="font-bold uppercase tracking-wider shrink-0">[NOTE: INTERNAL REPOSITORY]</span>
+              <span>Source code repositori ini berstatus private karena merupakan sistem operasional internal sekolah (SMKN 12 Jakarta) dan memuat privasi data siswa.</span>
+            </div>
+          )}
         </header>
 
         {/* Cover Image with Brutalist Border */}
