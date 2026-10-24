@@ -24,7 +24,7 @@ export const PORTFOLIO_PROJECTS: Project[] = [
     slug: 'portofoliome',
     description: 'Personal engineering portfolio dengan arsitektur Neo-Brutalist, performa super cepat, dan UI interaktif.',
     long_description: 'Dibangun menggunakan React, TypeScript, Tailwind CSS, dan arsitektur statis berkinerja tinggi. Mengimplementasikan desain Neo-Brutalist modern dengan tactile feedback, font monospaced yang presisi, dan integrasi GitHub repository.',
-    cover_image: '/images/projects/portofolio.png',
+    cover_image: '/images/projects/portofolioMe.png',
     github_url: 'https://github.com/Hiraetha/PortofolioMe',
     github_repo_name: 'Hiraetha/PortofolioMe',
     demo_url: 'https://github.com/Hiraetha/PortofolioMe',
