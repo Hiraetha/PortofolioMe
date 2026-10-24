@@ -147,7 +147,7 @@ export const ProjectDetail: React.FC = () => {
             <img
               src={project.cover_image}
               alt={project.title}
-              className="w-full h-auto max-h-[550px] object-cover filter contrast-110"
+              className="w-full h-auto max-h-[600px] object-contain mx-auto filter contrast-105"
             />
           </div>
         )}
