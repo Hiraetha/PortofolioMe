@@ -10,9 +10,9 @@ export const PORTFOLIO_PROFILE: Profile = {
   short_bio: 'Software Engineer & LKS IT Software Solution for Business Competitor.',
   email: 'ibnuabiadunya@gmail.com',
   github_url: 'https://github.com/Hiraetha',
-  linkedin_url: 'https://linkedin.com',
-  instagram_url: 'https://instagram.com',
-  avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80',
+  linkedin_url: 'https://www.linkedin.com/in/ibnuabiaddunya',
+  instagram_url: 'https://www.instagram.com/iiibbnab',
+  avatar_url: '/images/avatar/profile.png',
   location_label: 'Jakarta, Indonesia (GMT+7)',
   availability_status: 'OPEN FOR NEW OPPORTUNITIES',
 };
