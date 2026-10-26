@@ -61,6 +61,26 @@ export const PORTFOLIO_PROJECTS: Project[] = [
     created_at: '2026-10-18T09:00:00.000Z',
   },
   {
+    id: 'proj-07',
+    title: 'My Finance — Smart Fintech & AI Predictive Cash Flow App',
+    slug: 'finance-app',
+    description: 'Aplikasi manajemen finansial modern berbasis Full-Stack (Mobile & Backend API) dengan antarmuka Dark Fintech dan AI Predictive Cash Flow Engine.',
+    long_description: 'My Finance adalah aplikasi manajemen finansial modern berbasis Full-Stack (Mobile App + Backend API) yang dilengkapi dengan antarmuka bertema Dark Fintech serta AI Predictive Engine untuk membantu pengguna mengontrol arus kas, menyimulasikan kelayakan belanja (Can I Buy It?), melacak target tabungan (Savings Goals), dan menganalisis kesehatan keuangan secara real-time.\n\nFitur & Arsitektur Utama:\n• Dashboard Keuangan Real-Time: Pantau saldo akumulasi, ringkasan bulanan (uang masuk & keluar), kartu saldo dinamis dengan ambient geometric rings & privacy eye toggle, serta Financial Health Score terotomasi (0 - 100).\n• Manajemen Arus Kas & Transaksi: Pencatatan cepat transaksi pemasukan dan pengeluaran, filter multi-kategori, pencarian teks instan, dan visualisasi Dual Bar Track.\n• Simulator Prediktif AI ("Can I Buy It?"): Menguji kelayakan belanja barang impian sebelum checkout, kalkulasi akurat sisa saldo setelah pembelian, estimasi runway kas cadangan, dan saran jeda waktu menabung (Delay Days).\n• Target Tabungan (Savings Goals): Target impian finansial, setoran awal, quick chip presets (+Rp 500k, +Rp 1M, +Rp 2M), dan indikator progres On Track dinamis.\n• Analitik & Laporan Keuangan Bulanan: Navigasi pemilihan bulan interaktif, proporsi pengeluaran per kategori, serta Smart AI financial insight otomatis.\n• Arsitektur Full-Stack: Backend enterprise dibangun dengan NestJS, Prisma ORM, dan PostgreSQL; antarmuka mobile menggunakan React Native, Expo, NativeWind (Tailwind CSS), dan TypeScript.',
+    cover_image: '/images/projects/financeApp.png',
+    github_url: 'https://github.com/Hiraetha/FinanceApp',
+    github_repo_name: 'Hiraetha/FinanceApp',
+    demo_url: 'https://github.com/Hiraetha/FinanceApp',
+    technologies: ['React Native Expo', 'NestJS', 'TypeScript', 'Prisma', 'Tailwind CSS', 'PostgreSQL'],
+    category: 'Full-Stack',
+    featured: true,
+    published: true,
+    last_commit_message: 'feat: full-stack fintech mobile and predictive cash flow API',
+    last_commit_sha: '674cbe3',
+    last_commit_author: 'Hiraetha',
+    last_commit_at: '2026-10-25T12:00:00.000Z',
+    created_at: '2026-10-20T00:00:00.000Z',
+  },
+  {
     id: 'proj-02',
     title: 'Web Promosi RPL — SMKN 12 Jakarta',
     slug: 'promosirpl',
@@ -210,6 +230,8 @@ export const PORTFOLIO_TECHNOLOGIES: Technology[] = [
   { id: 'tech-12', name: 'Git', category: 'Tools / Other', icon: 'GitBranch', description: 'Distributed version control system for collaborative engineering' },
   { id: 'tech-13', name: 'GitHub', category: 'Tools / Other', icon: 'Github', description: 'Code hosting, collaboration, and continuous integration platform' },
   { id: 'tech-14', name: 'Vercel', category: 'Tools / Other', icon: 'Cloud', description: 'Frontend cloud platform for zero-config global edge deployment' },
+  { id: 'tech-15', name: 'Prisma', category: 'Backend', icon: 'Database', description: 'Next-generation TypeScript ORM for type-safe database querying' },
+  { id: 'tech-16', name: 'PostgreSQL', category: 'Backend', icon: 'Database', description: 'Advanced open-source relational database management system' },
 ];
 
 export const PORTFOLIO_TIMELINE: TimelineItem[] = [
