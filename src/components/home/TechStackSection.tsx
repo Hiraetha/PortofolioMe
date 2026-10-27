@@ -24,6 +24,8 @@ const techRoleMap: Record<string, string> = {
   'GitHub': 'Code Repository & CI/CD',
   'Supabase': 'Backend as a Service',
   'Vercel': 'Edge Cloud Deployment',
+  'Prisma': 'Next-Gen TypeScript ORM',
+  'PostgreSQL': 'Relational Database System',
 };
 
 export const TechStackSection: React.FC<TechStackSectionProps> = ({ technologies }) => {

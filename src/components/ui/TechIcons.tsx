@@ -14,6 +14,8 @@ import gitSvg from '../../assets/tech/git.svg';
 import githubSvg from '../../assets/tech/github.svg';
 import supabaseSvg from '../../assets/tech/supabase.svg';
 import vercelSvg from '../../assets/tech/vercel.svg';
+import prismaPng from '../../assets/tech/prisma.png';
+import postgresqlPng from '../../assets/tech/postgresql.png';
 
 interface TechLogoProps {
   name: string;
@@ -39,6 +41,8 @@ export const getTechLogoSrc = (name: string): string => {
   if (normalized.includes('github')) return githubSvg;
   if (normalized.includes('supabase')) return supabaseSvg;
   if (normalized.includes('vercel')) return vercelSvg;
+  if (normalized.includes('prisma')) return prismaPng;
+  if (normalized.includes('postgres') || normalized.includes('psql')) return postgresqlPng;
 
   return reactSvg;
 };
